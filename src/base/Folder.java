@@ -1,8 +1,9 @@
 package base;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Folder {
+public class Folder implements Comparable<Folder>{
 	private ArrayList<Note> notes;
 	private String name;
 	
@@ -59,5 +60,73 @@ public class Folder {
 				nImage++;
 		}
 		return name + ":" + nText + ":" + nImage;
+	}
+
+	@Override
+	public int compareTo(Folder o) {
+//		System.out.println(name.compareTo(o.name));
+		return name.compareTo(o.name);
+	}
+	
+	public void sortNotes() {
+		notes.sort(null);
+	}
+	
+	public List<Note> searchNotes(String keywords){
+		ArrayList<Note> output = new ArrayList<Note>();
+		
+		String []arrayOfKeywords = keywords.split("\\s+");
+		
+		ArrayList<ArrayList<String>> setsOfKeywords = new ArrayList<ArrayList<String>>();
+	
+		boolean requiredNewList = true;
+		
+		//append the keywords into 2d arrayList
+		for (String word : arrayOfKeywords) {
+			
+			if(word.equals("or")|| word.equals("OR")) {
+				requiredNewList = false;
+				continue;
+			}
+			
+			if(requiredNewList) {
+				setsOfKeywords.add(new ArrayList<String>());
+			}
+				
+			setsOfKeywords.get(setsOfKeywords.size()-1).add(word);
+			
+			requiredNewList = true;
+		}
+//		System.out.println(setOfKeywords);
+		
+		for (Note note : notes) {
+			
+			for (ArrayList<String> set: setsOfKeywords) {
+				boolean foundMatches = false;
+				
+				for (String word : set) {
+					if(note.getTitle().toLowerCase().contains(word.toLowerCase())) {
+						foundMatches = true;
+						break;
+					}
+					else if(note instanceof TextNote) {
+						if(((TextNote) note).content.toLowerCase().contains(word.toLowerCase())) {
+							foundMatches = true;
+							break;
+						}
+					}
+				}
+				
+				if (!foundMatches)
+					break;
+				
+				if(setsOfKeywords.indexOf(set) == setsOfKeywords.size()-1) {
+					output.add(note);
+				}
+			}
+		}
+
+		return output;
+		
 	}
 }

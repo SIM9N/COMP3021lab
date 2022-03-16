@@ -3,7 +3,9 @@ package base;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Folder implements Comparable<Folder>{
+public class Folder implements Comparable<Folder>, java.io.Serializable{
+	
+	private static final long serialVersionUID = -8451287108185475351L;
 	private ArrayList<Note> notes;
 	private String name;
 	

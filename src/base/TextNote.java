@@ -58,4 +58,8 @@ public class TextNote extends Note implements java.io.Serializable{
 			System.out.println(e);
 		}
 	}
+	
+	public String getContent() {
+		return content;
+	}
 }

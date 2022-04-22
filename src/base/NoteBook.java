@@ -50,7 +50,7 @@ public class NoteBook implements java.io.Serializable{
 		
 		for (Note n : f.getNotes()) {
 			if (n.equals(note)) {
-				System.out.println("Creating note " + note.getTitle() + " under folder " + folderName + " failed");
+//				System.out.println("Creating note " + note.getTitle() + " under folder " + folderName + " failed");
 				return false;
 			}
 				
@@ -89,6 +89,21 @@ public class NoteBook implements java.io.Serializable{
 		}
 		
 		return output;
+	}
+	
+	public boolean containFolder(String folderName) {
+		for (Folder folder: folders) {
+			if (folder.getName().equals(folderName))
+				return true;
+		}
+		return false;
+	}
+	
+	public void addFolder(String folderName) {
+		if (!containFolder(folderName)) {
+			Folder folder = new Folder(folderName);
+			folders.add(folder);
+		}
 	}
 	
 	public boolean save(String file) {
